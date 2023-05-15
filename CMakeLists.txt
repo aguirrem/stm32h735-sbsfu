@@ -7,13 +7,13 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY") # Add this line
 # Set your project name
 project(STM32H735_Project C CXX ASM)
 
-set(CMAKE_SYSTEM_NAME Generic)
-set(CMAKE_SYSTEM_PROCESSOR arm)
+# set(CMAKE_SYSTEM_NAME Generic)
+# set(CMAKE_SYSTEM_PROCESSOR arm)
 
 # Specify the cross compiler
-set(CMAKE_C_COMPILER /opt/ST/STM32CubeCLT/GNU-tools-for-STM32/bin/arm-none-eabi-gcc)
-set(CMAKE_CXX_COMPILER /opt/ST/STM32CubeCLT/GNU-tools-for-STM32/bin/arm-none-eabi-g++)
-set(CMAKE_ASM_COMPILER /opt/ST/STM32CubeCLT/GNU-tools-for-STM32/bin/arm-none-eabi-gcc)
+# set(CMAKE_C_COMPILER /opt/ST/STM32CubeCLT/GNU-tools-for-STM32/bin/arm-none-eabi-gcc)
+# set(CMAKE_CXX_COMPILER /opt/ST/STM32CubeCLT/GNU-tools-for-STM32/bin/arm-none-eabi-g++)
+# set(CMAKE_ASM_COMPILER /opt/ST/STM32CubeCLT/GNU-tools-for-STM32/bin/arm-none-eabi-gcc)
 
 # where is the target environment
 set(CMAKE_FIND_ROOT_PATH /opt/ST/STM32CubeCLT/GNU-tools-for-STM32)
@@ -34,10 +34,11 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy
   ${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Device/ST/STM32H7xx/Include
   ${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Include
+  ${CMAKE_SOURCE_DIR}/Drivers/BSP
 )
 
 # Add the source files
-file(GLOB_RECURSE SOURCES "src/*.c" "src/*.s" "Drivers/STM32H7xx_HAL_Driver/Src/*.c")
+file(GLOB_RECURSE SOURCES "src/*.c" "src/*.s" "Drivers/STM32H7xx_HAL_Driver/Src/*.c" "Drivers/BSP/*.c")
 
 message("Source files:")
 foreach(SOURCE ${SOURCES})
