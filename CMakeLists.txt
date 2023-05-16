@@ -35,10 +35,13 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Device/ST/STM32H7xx/Include
   ${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Include
   ${CMAKE_SOURCE_DIR}/Drivers/BSP
-  #${CMAKE_SOURCE_DIR}/1_ImageSBSFU/Core/Inc
-  #SBSFU headers
-  #/home/maguirre/projects/tae/stm32h735-sbsfu/1_ImageSBSFU/Core/Inc
   
+  #SBSFU headers
+  ${CMAKE_SOURCE_DIR}/1_ImageSBSFU/Core/Inc
+  ${CMAKE_SOURCE_DIR}/1_ImageSBSFU/Core/Inc
+  ${CMAKE_SOURCE_DIR}/1_ImageSBSFU/SBSFU/App 
+  #SECoreBin Headers
+  ${CMAKE_SOURCE_DIR}/1_Image_SECoreBin/Inc
 
 )
 

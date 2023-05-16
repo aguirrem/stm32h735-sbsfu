@@ -22,7 +22,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32h7xx_hal.h"
-#include "stm32h7xx_nucleo_144.h"
+//#include "stm32h7xx_nucleo_144.h"
+#include "stm32h735g_discovery.h" //(MRA port)
 #include "app_sfu.h"
 #include "app_hw.h"
 
