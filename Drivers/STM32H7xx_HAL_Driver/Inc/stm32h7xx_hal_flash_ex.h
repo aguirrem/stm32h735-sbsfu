@@ -18,7 +18,6 @@
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef STM32H7xx_HAL_FLASH_EX_H
 #define STM32H7xx_HAL_FLASH_EX_H
-
 #ifdef __cplusplus
  extern "C" {
 #endif
@@ -545,12 +544,11 @@ typedef struct
   * @}
   */
 #endif /* FLASH_OPTSR_NRST_STOP_D2 */
-
 #if defined (DUAL_BANK)
 /** @defgroup FLASHEx_OB_SWAP_BANK  FLASHEx OB SWAP BANK
   * @{
   */
-#define OB_SWAP_BANK_DISABLE   0x00000000U               /*!< Bank swap disabled */
+git #define OB_SWAP_BANK_DISABLE   0x00000000U               /*!< Bank swap disabled */
 #define OB_SWAP_BANK_ENABLE    FLASH_OPTSR_SWAP_BANK_OPT /*!< Bank swap enabled */
 /**
   * @}

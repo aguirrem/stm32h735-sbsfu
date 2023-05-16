@@ -1,0 +1,1 @@
+## This folder is originally found in 2_Images/2_Images_SBSFU/Core/Inc/app_hw.h

@@ -27,8 +27,10 @@ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
+#include "app_hw.h"
 #include "stm32h7xx_hal.h"
 #include "stm32h735g_discovery.h"
+
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */

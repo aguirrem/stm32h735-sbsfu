@@ -35,10 +35,30 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Device/ST/STM32H7xx/Include
   ${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Include
   ${CMAKE_SOURCE_DIR}/Drivers/BSP
+  ${CMAKE_SOURCE_DIR}/Drivers/BSP
+  ${CMAKE_SOURCE_DIR}/STM32_Secure_Engine/Core
+  ${CMAKE_SOURCE_DIR}/SECoreBin/Inc
+  ${CMAKE_SOURCE_DIR}/Linker_Common
+  ${CMAKE_SOURCE_DIR}/SBSFU/Target
+  ${CMAKE_SOURCE_DIR}/SBSFU/App
+  
 )
 
 # Add the source files
-file(GLOB_RECURSE SOURCES "src/*.c" "src/*.s" "Drivers/STM32H7xx_HAL_Driver/Src/*.c" "Drivers/BSP/*.c")
+file(GLOB_RECURSE SOURCES "src/*.c" "src/*.s" "Drivers/STM32H7xx_HAL_Driver/Src/*.c" 
+                          "Drivers/BSP/*.c" "SBSFU/App/*.c")
+
+# Add individual source files
+set(EXTRA_SOURCES
+${CMAKE_SOURCE_DIR}/SECoreBin/Src/se_interface_bootloader.c
+${CMAKE_SOURCE_DIR}/SBSFU/Target/sfu_low_level.c
+${CMAKE_SOURCE_DIR}/SBSFU/Target/sfu_low_level_flash.c
+${CMAKE_SOURCE_DIR}/SBSFU/Target/sfu_low_level_security.c
+)
+
+# Append the extra source files to the existing SOURCES variable
+list(APPEND SOURCES ${EXTRA_SOURCES})
+
 
 message("Source files:")
 foreach(SOURCE ${SOURCES})
