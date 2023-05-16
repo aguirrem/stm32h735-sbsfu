@@ -60,8 +60,16 @@ endforeach()
 
 # Add the source files
 file(GLOB_RECURSE SOURCES 
-  "src/*.c" 
+  "src/main.c"
+  "src/stm32h7xx_hal_msp.c"
+  "src/stm32h7xx_it.c"
+  "src/syscalls.c"
+  "src/sysmem.c"
+  "src/main.c"
+  "src/system_stm32h7xx.c"
+  #Drivers 
   "Drivers/STM32H7xx_HAL_Driver/Src/*.c" 
+  #Board Support Package
   "Drivers/BSP/*.c")
 
 
