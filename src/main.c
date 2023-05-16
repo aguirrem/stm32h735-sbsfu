@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "sfu_boot.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -54,7 +55,21 @@ static void MPU_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+#ifdef SFU_MPU_PROTECT_ENABLE
+/**
+  * @brief  CPU L1-Cache enable.
+  * @param  None
+  * @retval None
+  */
+static void CPU_CACHE_Enable(void)
+{
+  /* Enable I-Cache */
+  SCB_EnableICache();
 
+  /* Enable D-Cache */
+  SCB_EnableDCache();
+}
+#endif /* SFU_MPU_PROTECT_ENABLE */
 /* USER CODE END 0 */
 
 /**
@@ -64,6 +79,11 @@ static void MPU_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+#ifdef SFU_MPU_PROTECT_ENABLE
+  
+  /* Enable the CPU Cache */
+  CPU_CACHE_Enable();
+#endif /* SFU_MPU_PROTECT_ENABLE */
 
   /* USER CODE END 1 */
 
@@ -92,7 +112,7 @@ int main(void)
   BSP_LED_Init(LED2);
   BSP_LED_Toggle(LED1); /* yellow led*/
   
- 
+  (void)SFU_BOOT_RunSecureBootService(); /* no need to take care of the returned value as we reboot in all cases */
   /* USER CODE END 2 */
 
   /* Infinite loop */

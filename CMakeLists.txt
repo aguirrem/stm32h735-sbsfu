@@ -40,9 +40,17 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/1_ImageSBSFU/Core/Inc
   ${CMAKE_SOURCE_DIR}/1_ImageSBSFU/Core/Inc
   ${CMAKE_SOURCE_DIR}/1_ImageSBSFU/SBSFU/App 
+
+  #SBSFU Target H735
+  ${CMAKE_SOURCE_DIR}/src/Target
   #SECoreBin Headers
   ${CMAKE_SOURCE_DIR}/1_Image_SECoreBin/Inc
 
+  #SECoreBin 
+  ${CMAKE_SOURCE_DIR}/Middlewares/ST/STM32_Secure_Engine/Core
+
+  #Linker Common
+  ${CMAKE_SOURCE_DIR}/Linker_Common/STM32CubeIDE
 )
 
 
@@ -63,14 +71,17 @@ file(GLOB_RECURSE SOURCES
   "src/main.c"
   "src/stm32h7xx_hal_msp.c"
   "src/stm32h7xx_it.c"
-  "src/syscalls.c"
-  "src/sysmem.c"
+  #"src/syscalls.c"
+  #"src/sysmem.c"
   "src/main.c"
   "src/system_stm32h7xx.c"
   #Drivers 
   "Drivers/STM32H7xx_HAL_Driver/Src/*.c" 
   #Board Support Package
-  "Drivers/BSP/*.c")
+  "Drivers/BSP/*.c"
+  #sbsfu files
+  "1_ImageSBSFU/STM32CubeIDE/Application/Core/syscalls.c"
+  "1_ImageSBSFU/SBSFU/App/sfu_boot.c")
 
 
 
