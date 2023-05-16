@@ -91,8 +91,7 @@ int main(void)
   BSP_LED_Init(LED1);
   BSP_LED_Init(LED2);
   BSP_LED_Toggle(LED1); /* yellow led*/
-  BSP_LED_Toggle(LED2); /* yellow led*/
-  BSP_LED_Toggle(LED3); /* yellow led*/
+  
  
   /* USER CODE END 2 */
 
@@ -102,8 +101,8 @@ int main(void)
   {
     /* USER CODE END WHILE */
     HAL_Delay(250);
-    // BSP_LED_Toggle(LED1); /* yellow led*/
-    // BSP_LED_Toggle(LED2); /* yellow led*/
+    BSP_LED_Toggle(LED1); /* yellow led*/
+    BSP_LED_Toggle(LED2); /* yellow led*/
 
     /* USER CODE BEGIN 3 */
   }

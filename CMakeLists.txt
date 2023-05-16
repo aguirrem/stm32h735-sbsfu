@@ -35,10 +35,39 @@ include_directories(
   ${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Device/ST/STM32H7xx/Include
   ${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Include
   ${CMAKE_SOURCE_DIR}/Drivers/BSP
+  #${CMAKE_SOURCE_DIR}/1_ImageSBSFU/Core/Inc
+  #SBSFU headers
+  #/home/maguirre/projects/tae/stm32h735-sbsfu/1_ImageSBSFU/Core/Inc
+  
+
 )
 
+
+
+
+# Prepend the source directory to the header file names
+list(TRANSFORM SPECIFIC_HEADER_FILENAMES PREPEND ${CMAKE_SOURCE_DIR}/)
+
+
+message("Source files:")
+foreach(HEADER ${SPECIFIC_HEADER_FILENAMES})
+    message("${HEADER}")
+endforeach()
+
+
 # Add the source files
-file(GLOB_RECURSE SOURCES "src/*.c" "src/*.s" "Drivers/STM32H7xx_HAL_Driver/Src/*.c" "Drivers/BSP/*.c")
+file(GLOB_RECURSE SOURCES 
+  "src/*.c" 
+  "Drivers/STM32H7xx_HAL_Driver/Src/*.c" 
+  "Drivers/BSP/*.c")
+
+
+
+set(EXTRA_SOURCES
+
+)
+
+list(APPEND SOURCES ${EXTRA_SOURCES})
 
 message("Source files:")
 foreach(SOURCE ${SOURCES})
@@ -48,8 +77,8 @@ endforeach()
 set(STARTUP_FILE "${CMAKE_SOURCE_DIR}/Startup/startup_stm32h735zgtx.s")
 
 # Add executable
-#add_executable(${PROJECT_NAME}.elf ${SOURCES})
 add_executable(${PROJECT_NAME}.elf ${SOURCES} ${STARTUP_FILE})
+
 
 # Add preprocessor definitions
 target_compile_definitions(${PROJECT_NAME}.elf PRIVATE
