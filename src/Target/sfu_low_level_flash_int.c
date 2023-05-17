@@ -26,7 +26,6 @@
 #include "string.h"
 #include "sfu_fsm_states.h"
 #include "sfu_error.h"
-
 /* Private defines -----------------------------------------------------------*/
 #define NB_PAGE_SECTOR_PER_ERASE  2U    /*!< Nb page erased per erase */
 #define SFU_FLASH_BANK_SIZE 0x100000UL  /*!< Bank size = 1 MB*/
@@ -118,6 +117,7 @@ SFU_ErrorStatus SFU_LL_FLASH_INT_Erase_Size(SFU_FLASH_StatusTypeDef *pFlashStatu
           } while (nb_sectors > 0U);
           erase_command = 1U;
         }
+#if defined (DUAL_BANK)        
         else
         {
           uint32_t startbank2 = SFU_LL_FLASH_INT_GetBankAddr(FLASH_BANK_2);
@@ -145,6 +145,7 @@ SFU_ErrorStatus SFU_LL_FLASH_INT_Erase_Size(SFU_FLASH_StatusTypeDef *pFlashStatu
             SFU_LL_SECU_IWDG_Refresh(); /* calling this function which checks the compiler switch */
           } while (nb_sectors > 0U);
         }
+#endif //#if defined (DUAL_BANK)        
       } while (erase_command == 0U);
 
       /* Lock the Flash to disable the flash control register access (recommended
@@ -395,7 +396,8 @@ uint32_t SFU_LL_FLASH_INT_GetSector(uint32_t Add)
   */
 uint32_t SFU_LL_FLASH_INT_GetBank(uint32_t Addr)
 {
-  uint32_t bank;
+  uint32_t bank = FLASH_BANK_1;
+#if defined (DUAL_BANK)  
   if (READ_BIT(FLASH->OPTCCR, FLASH_OPTCR_SWAP_BANK) == 0U)
   {
     /* No Bank swap */
@@ -420,7 +422,7 @@ uint32_t SFU_LL_FLASH_INT_GetBank(uint32_t Addr)
       bank = FLASH_BANK_1;
     }
   }
-
+#endif //#if defined (DUAL_BANK)
   return bank;
 }
 
@@ -461,6 +463,7 @@ static SFU_ErrorStatus SFU_LL_FLASH_INT_Clear_Error(void)
   */
 static uint32_t SFU_LL_FLASH_INT_GetBankAddr(uint32_t Bank)
 {
+#if defined (DUAL_BANK)  
   if (Bank == FLASH_BANK_2)
   {
     return  FLASH_BASE + (SFU_FLASH_BANK_SIZE);
@@ -469,6 +472,9 @@ static uint32_t SFU_LL_FLASH_INT_GetBankAddr(uint32_t Bank)
   {
     return FLASH_BASE;
   }
+#else
+  return FLASH_BASE;
+#endif //#if defined (DUAL_BANK)
 }
 
 /**

@@ -633,22 +633,29 @@ SFU_ErrorStatus SFU_LL_SECU_CheckFlashConfiguration(FLASH_OBProgramInitTypeDef *
    * Check that we do not swap Bank1 and Bank2.
    * Bank swapping is controlled by the SWAP_BANK bit located in the FLASH_OPTCR register.
    */
-  if ((psFlashOptionBytes->USERConfig & OB_SWAP_BANK_ENABLE) == OB_SWAP_BANK_DISABLE)
-  {
-    /* Swap is NOT configured */
-    e_ret_status = SFU_SUCCESS;
-  }
-  else
-  {
-    /* Swap is configured */
-    e_ret_status = SFU_ERROR;
-  }
+  #ifdef DUAL_BANK
+    if ((psFlashOptionBytes->USERConfig & OB_SWAP_BANK_ENABLE) == OB_SWAP_BANK_DISABLE)
+    {
+      /* Swap is NOT configured */
+      e_ret_status = SFU_SUCCESS;
+    }
+    else
+    {
+      /* Swap is configured */
+      e_ret_status = SFU_ERROR;
+    }
 
-  if (e_ret_status == SFU_SUCCESS)
-  {
-    /* Execution stopped if flow control failed */
-    FLOW_CONTROL_STEP(uFlowProtectValue, FLOW_STEP_UBE, FLOW_CTRL_UBE);
-  }
+  #else 
+    //STM32H735 does not define DUAL_BANK
+    e_ret_status = SFU_SUCCESS;
+  #endif //DUAL_BANK 
+
+    if (e_ret_status == SFU_SUCCESS)
+    {
+      /* Execution stopped if flow control failed */
+      FLOW_CONTROL_STEP(uFlowProtectValue, FLOW_STEP_UBE, FLOW_CTRL_UBE);
+    }
+
   return e_ret_status;
 
 }
@@ -675,6 +682,7 @@ SFU_ErrorStatus SFU_LL_SECU_SetFlashConfiguration(FLASH_OBProgramInitTypeDef *ps
 #if defined(SECBOOT_OB_DEV_MODE)
     if (HAL_FLASHEx_OBProgram(psFlashOptionBytes) == HAL_OK)
     {
+      #ifdef DUAL_BANK
       /* Making sure bank 1 is selected */
       psFlashOptionBytes->Banks = FLASH_BANK_1;
       psFlashOptionBytes->OptionType = OPTIONBYTE_USER;
@@ -687,6 +695,10 @@ SFU_ErrorStatus SFU_LL_SECU_SetFlashConfiguration(FLASH_OBProgramInitTypeDef *ps
         /* Execution stopped if flow control failed */
         FLOW_CONTROL_STEP(uFlowProtectValue, FLOW_STEP_UBE, FLOW_CTRL_UBE);
       }
+      #else 
+        e_ret_status = SFU_SUCCESS;
+        FLOW_CONTROL_STEP(uFlowProtectValue, FLOW_STEP_UBE, FLOW_CTRL_UBE);
+      #endif //DUAL_BANK
     }
 #else
     TRACE("\r\n= [SBOOT] System Security Configuration failed: device configuration is incorrect. STOP!");
