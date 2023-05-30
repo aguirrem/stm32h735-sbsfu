@@ -44,13 +44,12 @@ include_directories(
   #SBSFU Target H735
   ${CMAKE_SOURCE_DIR}/src/Target
   #SECoreBin Headers
-  ${CMAKE_SOURCE_DIR}/1_Image_SECoreBin/Inc
+  ${CMAKE_SOURCE_DIR}/../stm32h735-secorebin/1_Image_SECoreBin/Inc
+  
 
-  #SECoreBin 
-  ${CMAKE_SOURCE_DIR}/Middlewares/ST/STM32_Secure_Engine/Core
-
+  ${CMAKE_SOURCE_DIR}/../Middlewares/ST/STM32_Secure_Engine/Core
   #Linker Common
-  ${CMAKE_SOURCE_DIR}/Linker_Common/STM32CubeIDE
+  ${CMAKE_SOURCE_DIR}/../Linker_Common/STM32CubeIDE
 )
 
 
@@ -71,9 +70,15 @@ file(GLOB_RECURSE SOURCES
   "src/main.c"
   "src/stm32h7xx_hal_msp.c"
   "src/stm32h7xx_it.c"
+  "src/sfu_secorebin_Inc.c"
+  "src/Target/sfu_low_level.c"
+  "src/Target/sfu_low_level_flash.c"
+  "src/Target/sfu_low_level_security.c"
+  "src/Target/sfu_low_level_flash.c"
+  "src/Target/sfu_low_level_flash_int.c"
+  "src/Target/sfu_low_level_flash_ext.c"
   #"src/syscalls.c"
   #"src/sysmem.c"
-  "src/main.c"
   "src/system_stm32h7xx.c"
   #Drivers 
   "Drivers/STM32H7xx_HAL_Driver/Src/*.c" 
@@ -81,7 +86,18 @@ file(GLOB_RECURSE SOURCES
   "Drivers/BSP/*.c"
   #sbsfu files
   "1_ImageSBSFU/STM32CubeIDE/Application/Core/syscalls.c"
-  "1_ImageSBSFU/SBSFU/App/sfu_boot.c")
+  "1_ImageSBSFU/SBSFU/App/sfu_boot.c"
+  "1_ImageSBSFU/SBSFU/App/sfu_mpu_isolation.c"
+  "1_ImageSBSFU/SBSFU/App/sfu_com_trace.c"
+  "1_ImageSBSFU/SBSFU/App/sfu_loader.c"
+  "1_ImageSBSFU/SBSFU/App/sfu_error.c"
+  "1_ImageSBSFU/SBSFU/App/sfu_fwimg_common.c"
+  "1_ImageSBSFU/SBSFU/App/sfu_com_loader.c"
+  "1_ImageSBSFU/SBSFU/App/sfu_new_image.c"
+  "../Middlewares/ST/STM32_Secure_Engine/Core/se_interface_bootloader.c"
+  "../Middlewares/ST/STM32_Secure_Engine/Core/se_interface_common.c"
+  
+)
 
 
 
@@ -136,9 +152,9 @@ target_compile_options(${PROJECT_NAME}.elf PRIVATE
   -mfloat-abi=hard
   -mthumb
 )
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mcpu=cortex-m7 -T${CMAKE_SOURCE_DIR}/STM32H735ZGTX_FLASH.ld --specs=nosys.specs -Wl,-Map=${PROJECT_NAME}.map -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group -L${CMAKE_SOURCE_DIR}/../Linker_Common/STM32CubeIDE/")
 
-
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mcpu=cortex-m7 -T${CMAKE_SOURCE_DIR}/STM32H735ZGTX_FLASH.ld --specs=nosys.specs -Wl,-Map=${PROJECT_NAME}.map -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group")
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mcpu=cortex-m7 -T${CMAKE_SOURCE_DIR}/STM32H735ZGTX_FLASH.ld --specs=nosys.specs -Wl,-Map=${PROJECT_NAME}.map -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group")
 
 # Generate HEX file
 add_custom_command(TARGET ${PROJECT_NAME}.elf POST_BUILD

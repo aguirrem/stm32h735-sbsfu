@@ -43,7 +43,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+UART_HandleTypeDef UartHandle;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -108,9 +108,51 @@ int main(void)
 
   /* Initialize all configured peripherals */
   /* USER CODE BEGIN 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+  
   BSP_LED_Init(LED1);
   BSP_LED_Init(LED2);
   BSP_LED_Toggle(LED1); /* yellow led*/
+
+  /*##-1- Configure the UART peripheral ######################################*/
+  /* Put the USART peripheral in the Asynchronous mode (UART Mode) */
+  /* UART configured as follows:
+      - Word Length = 8 Bits (7 data bit + 1 parity bit) : 
+	                  BE CAREFUL : Program 7 data bits + 1 parity bit in PC HyperTerminal
+      - Stop Bit    = One Stop bit
+      - Parity      = ODD parity
+      - BaudRate    = 115200 baud
+      - Hardware flow control disabled (RTS and CTS signals) */
+  UartHandle.Instance            = USARTx;
+
+  UartHandle.Init.BaudRate       = 115200;
+  UartHandle.Init.WordLength     = UART_WORDLENGTH_8B;
+  UartHandle.Init.StopBits       = UART_STOPBITS_1;
+  UartHandle.Init.Parity         = UART_PARITY_NONE;
+  UartHandle.Init.HwFlowCtl      = UART_HWCONTROL_NONE;
+  UartHandle.Init.Mode           = UART_MODE_TX_RX;
+  UartHandle.Init.OverSampling   = UART_OVERSAMPLING_16;
+  UartHandle.Init.ClockPrescaler = UART_PRESCALER_DIV1;
+  UartHandle.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if(HAL_UART_Init(&UartHandle) != HAL_OK)
+  {
+    /* Initialization Error */
+    Error_Handler();
+  }
+
+
+  while (1)
+  {
+    /* USER CODE END WHILE */
+    HAL_Delay(250);
+    BSP_LED_Toggle(LED1); /* yellow led*/
+    BSP_LED_Toggle(LED2); /* yellow led*/
+
+    /* USER CODE BEGIN 3 */
+  }
+
   
   (void)SFU_BOOT_RunSecureBootService(); /* no need to take care of the returned value as we reboot in all cases */
   /* USER CODE END 2 */

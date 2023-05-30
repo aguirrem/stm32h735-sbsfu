@@ -18,9 +18,10 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "string.h"
+
 #if defined (__GNUC__)
 asm(".section SE_CORE_Bin,\"a\";"
-                             ".incbin \"../../../1_Image_SECoreBin/STM32CubeIDE/Debug/SECoreBin.bin\";"
+                             ".incbin \"../../stm32h735-secorebin/build/SECoreBin.bin\";"
 );
 #endif 
 

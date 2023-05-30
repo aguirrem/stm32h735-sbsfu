@@ -119,18 +119,18 @@ size_t __write(int file, unsigned char const *ptr, size_t len)
 }
 #endif /* __ICCARM__ */
 
-/**
-  * @brief  Retargets the C library printf function to SFU UART.
-  * @param  None
-  * @retval ch
-  */
-PUTCHAR_PROTOTYPE
-{
-  /* Place your implementation of fputc here */
-  /* e.g. write a character to the USART1 and Loop until the end of transmission */
-  (void) SFU_LL_UART_Transmit((uint8_t *)&ch, 1U, 0xFFFFU);
+// /**
+//   * @brief  Retargets the C library printf function to SFU UART.
+//   * @param  None
+//   * @retval ch
+//   */
+// PUTCHAR_PROTOTYPE
+// {
+//   /* Place your implementation of fputc here */
+//   /* e.g. write a character to the USART1 and Loop until the end of transmission */
+//   (void) SFU_LL_UART_Transmit((uint8_t *)&ch, 1U, 0xFFFFU);
 
-  return ch;
-}
+//   return ch;
+// }
 
 #endif /* SFU_DEBUG_MODE || SFU_TEST_PROTECTION */
