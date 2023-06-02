@@ -19,6 +19,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "sfu_boot.h"
+#include "stdint.h"
 #include <stdio.h>
 
 /** @addtogroup STM32H7xx_HAL_Examples
@@ -58,10 +60,14 @@ static void Error_Handler(void);
   */
 int main(void)
 {
+  uint32_t counter = 0;
   
   /* Configure the MPU attributes */
   MPU_Config();
 
+  /* Enable the CPU Cache */
+#ifdef SFU_MPU_PROTECT_ENABLE
+  #error MRAG
   /* Enable the CPU Cache */
   CPU_CACHE_Enable();
    /* STM32H7xx HAL library initialization:
@@ -73,6 +79,9 @@ int main(void)
        - Set NVIC Group Priority to 4
        - Low Level Initialization
      */
+
+#endif /* SFU_MPU_PROTECT_ENABLE */
+
   HAL_Init();
 
   /* Configure the system clock to 520 MHz */
@@ -107,15 +116,17 @@ int main(void)
     Error_Handler();
   }
 
-  /* Output a message on Hyperterminal using printf function */
-  printf("\n\r UART Printf Example: retarget the C library printf function to the UART\n\r");
-  printf("** Test finished successfully. ** \n\r");
-
   /* Infinite loop */
+  printf("UART Config Successfuly\n\r");
+  (void)SFU_BOOT_RunSecureBootService(); /* no need to take care of the returned value as we reboot in all cases */
   while (1)
   {
+
 	  BSP_LED_Toggle(LED2);
+    printf("Loop counter %ld\n\r",counter++);    
+
 	  HAL_Delay(1000);
+
   }
 }
 
